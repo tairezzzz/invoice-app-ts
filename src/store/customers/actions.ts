@@ -11,7 +11,7 @@ export enum ActionTypes {
 
 export const Actions = {
   getCustomers: () => action(ActionTypes.GET_CUSTOMERS),
-  getCustomersSucceeded: (payload: Customer) => action(ActionTypes.GET_CUSTOMERS_SUCCEEDED, payload),
+  getCustomersSucceeded: (payload: Customer[]) => action(ActionTypes.GET_CUSTOMERS_SUCCEEDED, payload),
   getCustomersFailed: (payload?: any) => action(ActionTypes.GET_CUSTOMERS_FAIL, payload),
 };
 
