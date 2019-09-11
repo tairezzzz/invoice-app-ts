@@ -1,39 +1,47 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+
+import { connect, useSelector } from 'react-redux';
+import { Dispatch } from 'redux';
+import { Actions } from '../../store/customers/actions';
+import { RootState } from '../../store';
+import { getCustomersArray } from '../../store/customers/selectors';
+import { getIsCustomersLoading } from '../../store/customers-requests/selectors';
 
 import { Table, TableBody, TableHead, TableRow, Paper, Container } from '@material-ui/core';
-import StyledTableCell from '../../shared/components/Table/StyledTableCell';
-// import StyledTableRow from '../../shared/components/Table/StyledTableRow';
 import { styles } from '../../shared/components/styles/styles';
-
-// import { connect, useSelector } from 'react-redux';
-// import { bindActionCreators, Dispatch } from 'redux';
-// import { getCustomers } from '../../store/customers/actions';
-
-// import { getCustomersArray } from '../../store/customers/selectors';
+import StyledTableCell from '../../shared/components/Table/StyledTableCell';
+import StyledTableRow from '../../shared/components/Table/StyledTableRow';
+import Spinner from '../../shared/components/Spinner/Spinner';
 
 
-// const mapDispatchToProps = (dispatch: Dispatch) =>
-//   bindActionCreators({
-//     getCustomers
-//   }, dispatch);
 
-// type Props = ReturnType<typeof mapDispatchToProps>;
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  getCustomers: () => dispatch(Actions.getCustomers()),
+});
 
-const Customers: React.FC = ({...props}) => {
 
-  // useEffect(() => {
-  //   getCustomers();
-  // }, [getCustomers]);
-  //
-  // const customers = useSelector(state => getCustomersArray(state))
+type Props = ReturnType<typeof mapDispatchToProps>;
 
-  // const customersRows = customers.map(customer => (
-  //   <StyledTableRow key={customer._id}>
-  //     <StyledTableCell component="th" scope="row">{customer.name}</StyledTableCell>
-  //     <StyledTableCell>{customer.address}</StyledTableCell>
-  //     <StyledTableCell>{customer.phone}</StyledTableCell>
-  //   </StyledTableRow>
-  // ))
+const Customers: React.FC<Props> = ({getCustomers, ...props}) => {
+
+  useEffect(() => {
+    getCustomers();
+  }, [getCustomers]);
+
+  const customers = useSelector((state: RootState) => getCustomersArray(state))
+  const isCustomersLoading = useSelector((state: RootState) => getIsCustomersLoading(state))
+
+  const customersRows = customers.map(customer => (
+    <StyledTableRow key={customer._id}>
+      <StyledTableCell component="th" scope="row">{customer.name}</StyledTableCell>
+      <StyledTableCell>{customer.address}</StyledTableCell>
+      <StyledTableCell>{customer.phone}</StyledTableCell>
+    </StyledTableRow>
+  ))
+
+  if(isCustomersLoading) {
+    return <Spinner />
+  }
 
   return (
     <Container>
@@ -48,7 +56,7 @@ const Customers: React.FC = ({...props}) => {
           </TableHead>
           <TableBody>
 
-            {/*{customersRows}*/}
+            {customersRows}
 
           </TableBody>
         </Table>
@@ -57,8 +65,5 @@ const Customers: React.FC = ({...props}) => {
   );
 }
 
-export default Customers
 
-
-
-// export default connect(null, mapDispatchToProps)(Customers);
+export default connect(null, mapDispatchToProps)(Customers);
