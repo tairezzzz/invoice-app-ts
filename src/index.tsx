@@ -3,11 +3,11 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-import { createMuiTheme } from "@material-ui/core";
+import { Provider } from 'react-redux';
+import store from './store/index';
+
+import { createMuiTheme } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
-
-
-
 
 
 
@@ -20,17 +20,16 @@ const theme = createMuiTheme({
       light: '#d1c4e9',
       main: '#b39ddb',
       contrastText: '#e3f2fd',
-    },
-    // red: {
-    //   main: '#ef5350'
-    // },
-  },
+    }
+  }
 });
 
 const app = (
-  <ThemeProvider theme={theme}>
-    <App />
-  </ThemeProvider>
+  <Provider store={store}>
+    <ThemeProvider theme={theme}>
+      <App />
+    </ThemeProvider>
+  </Provider>
 );
 
 ReactDOM.render(app, document.getElementById('root'));
