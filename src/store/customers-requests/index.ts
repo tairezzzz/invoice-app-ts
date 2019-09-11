@@ -8,7 +8,7 @@ import {
   ActionTypes as getCustomersActionTypes,
   epic as getCustomersEpic,
   reducer as getCustomersReducer,
-} from './nestes-states/get-customers';
+} from './nested-states/get-customers';
 
 
 export const Actions = {
