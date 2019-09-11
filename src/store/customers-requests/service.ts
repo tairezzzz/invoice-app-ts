@@ -1,5 +1,3 @@
-import 'rxjs/add/operator/switchMap';
-
 import { ajax } from 'rxjs/observable/dom/ajax';
 
 
@@ -13,9 +11,7 @@ class CustomersRequestsService {
       .getJSON(url)
   }
 
-
 }
-
 
 
 export const requestsService = new CustomersRequestsService();
