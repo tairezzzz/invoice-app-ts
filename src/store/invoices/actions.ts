@@ -1,6 +1,6 @@
 import { action, ActionType } from 'typesafe-actions';
 
-import { Invoice } from '../../shared/interfaces/invoice';
+import { Invoice, InvoiceItem } from '../../shared/interfaces/invoice';
 
 
 export enum ActionTypes {
@@ -15,6 +15,10 @@ export enum ActionTypes {
   POST_INVOICE = 'POST_INVOICE',
   POST_INVOICE_SUCCEEDED = 'POST_INVOICE_SUCCEEDED',
   POST_INVOICE_FAIL = 'POST_INVOICE_FAIL',
+
+  POST_INVOICE_ITEMS = 'POST_INVOICE_ITEMS',
+  POST_INVOICE_ITEMS_SUCCEEDED = 'POST_INVOICE_ITEMS_SUCCEEDED',
+  POST_INVOICE_ITEMS_FAIL = 'POST_INVOICE_ITEMS_FAIL',
 }
 
 export const Actions = {
@@ -29,6 +33,10 @@ export const Actions = {
   postInvoice: (payload: object) => action(ActionTypes.POST_INVOICE, payload),
   postInvoiceSucceeded: (payload: Invoice[]) => action(ActionTypes.POST_INVOICE_SUCCEEDED, payload),
   postInvoiceFailed: (payload?: any) => action(ActionTypes.POST_INVOICE_FAIL, payload),
+
+  postInvoiceItems: (payload: object) => action(ActionTypes.POST_INVOICE_ITEMS, payload),
+  postInvoiceItemsSucceeded: (payload: InvoiceItem[]) => action(ActionTypes.POST_INVOICE_ITEMS_SUCCEEDED, payload),
+  postInvoiceItemsFailed: (payload?: any) => action(ActionTypes.POST_INVOICE_ITEMS_FAIL, payload),
 };
 
 export type ActionTypeUnion = ActionType<typeof Actions>;

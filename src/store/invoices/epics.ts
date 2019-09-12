@@ -1,5 +1,6 @@
 import { Epic, ofType } from 'redux-observable';
-import {  map } from 'rxjs/operators';
+import {  map, mergeMap } from 'rxjs/operators';
+import { from } from 'rxjs';
 
 import { Actions as InvoicesRequestActions, ActionTypes as InvoicesRequestsActionTypes } from '../invoices-requests';
 import { transferActionEpicFactory } from '../utils/transfer-action';
@@ -81,6 +82,48 @@ export const postInvoiceRequestFail: Epic = transferActionEpicFactory(
 );
 
 
+export const postInvoiceItemsRequest: Epic = (action$) =>
+  action$.pipe(
+    ofType(ActionTypes.POST_INVOICE_SUCCEEDED),
+    mergeMap(
+      (action) => {
+        const { payload, meta } = action.payload;
+
+        const invoice_id = payload.response._id;
+        const items = meta;
+
+        return from(items)
+          .pipe(
+            map(  item => {
+              return InvoicesRequestActions.postInvoiceItems.action({...item, invoice_id})
+            })
+          );
+      }
+    )
+  );
+
+export const postInvoiceItemsRequestSuccess: Epic = transferActionEpicFactory(
+  InvoicesRequestsActionTypes.postInvoiceItemsActionTypes.ACTION_SUCCEEDED,
+  Actions.postInvoiceItemsFailed,
+);
+
+export const postInvoiceItemsRequestFail: Epic = transferActionEpicFactory(
+  InvoicesRequestsActionTypes.postInvoiceItemsActionTypes.ACTION_FAILED,
+  Actions.postInvoiceItemsFailed,
+);
+
+
+export const continueOnPostInvoiceItemsSuccess: Epic  = (action$) =>
+  action$.pipe(
+    ofType(ActionTypes.POST_INVOICE_ITEMS_SUCCEEDED),
+    map(
+      () => {
+        return InvoicesRequestActions.getInvoices.action();
+      }
+    )
+  );
+
+
 
 export const epics = [
   getInvoicesRequest,
@@ -95,4 +138,9 @@ export const epics = [
   postInvoiceRequest,
   postInvoiceRequestSuccess,
   postInvoiceRequestFail,
+
+  postInvoiceItemsRequest,
+  postInvoiceItemsRequestSuccess,
+  postInvoiceItemsRequestFail,
+  continueOnPostInvoiceItemsSuccess,
 ];
