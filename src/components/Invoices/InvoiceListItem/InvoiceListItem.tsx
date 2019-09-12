@@ -12,18 +12,19 @@ import { styles } from './styles';
 
 
 
-type InvoiceProps = {
+interface InvoiceProps {
   customers: any;
   inv_id: string;
   discount: number;
   total: number;
   customer_id: any;
   isInvoicesPage: boolean;
-};
+  onDeletingInvoice: any;
+}
 
 
 
-const InvoiceListItem: React.FC<InvoiceProps>  = ({customers, inv_id, discount, total, customer_id, isInvoicesPage }) => {
+const InvoiceListItem: React.FC<InvoiceProps>  = ({customers, onDeletingInvoice,  inv_id, discount, total, customer_id, isInvoicesPage }) => {
 
 
   const [isOpen, setToggleOpen] = useState(false)
@@ -34,7 +35,7 @@ const InvoiceListItem: React.FC<InvoiceProps>  = ({customers, inv_id, discount, 
 
 
   const handleDelete = (id: string) => {
-    // deleteInvoice(id);
+    onDeletingInvoice(id);
     handleToggleOpen();
   };
 

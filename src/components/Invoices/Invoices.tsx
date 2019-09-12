@@ -6,7 +6,7 @@ import { connect, useSelector } from 'react-redux';
 import { Dispatch } from 'redux';
 
 import { Actions as InvoicesActions } from '../../store/invoices/actions';
-import { Actions as CustomersActions} from '../../store/customers/actions';
+import { Actions as CustomersActions } from '../../store/customers/actions';
 
 import { getInvoicesArray } from '../../store/invoices/selectors';
 import { getEntities as getCustomersSelector } from '../../store/customers/selectors';
@@ -27,11 +27,13 @@ import Spinner from "../../shared/components/Spinner/Spinner";
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   getInvoices: () => dispatch(InvoicesActions.getInvoices()),
   getCustomers: () => dispatch(CustomersActions.getCustomers()),
+  deleteInvoice: (id: string) => dispatch(InvoicesActions.deleteInvoice(id)),
 });
+
 
 type Props = ReturnType<typeof mapDispatchToProps> & RouteComponentProps;
 
-const Invoices: React.FC<Props> = ({getCustomers, getInvoices, location }) => {
+const Invoices: React.FC<Props> = ({getCustomers, getInvoices, deleteInvoice, location }) => {
   useEffect(() => {
     getInvoices();
   }, [getInvoices]);
@@ -39,6 +41,10 @@ const Invoices: React.FC<Props> = ({getCustomers, getInvoices, location }) => {
   useEffect(() => {
     getCustomers();
   }, [getCustomers]);
+
+  const onDeletingInvoice = (id: string) => {
+    deleteInvoice(id)
+  }
 
 
   const isInvoicesPage = location.pathname === "/invoices"
@@ -60,6 +66,7 @@ const Invoices: React.FC<Props> = ({getCustomers, getInvoices, location }) => {
         inv_id={invoice._id}
         customers={customers}
         {...invoice}
+        onDeletingInvoice={onDeletingInvoice}
         isInvoicesPage={isInvoicesPage}/> ))
     : null;
 
@@ -70,7 +77,7 @@ const Invoices: React.FC<Props> = ({getCustomers, getInvoices, location }) => {
         <Table style={styles.table}>
           <TableHead>
             <TableRow>
-              <StyledTableCell>Invoiсe ID</StyledTableCell>
+              <StyledTableCell>Invoice ID</StyledTableCell>
               <StyledTableCell>Customer Name</StyledTableCell>
               <StyledTableCell>Discount (%)</StyledTableCell>
               <StyledTableCell>Total</StyledTableCell>
