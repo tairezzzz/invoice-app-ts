@@ -15,6 +15,15 @@ class InvoicesRequestsService {
       .delete(`${url}/${id}`)
   }
 
+  postInvoice(invoice: unknown) {
+    return ajax
+      .post(
+        url,
+        JSON.stringify(invoice),
+        {'Content-Type': 'application/json'}
+      )
+  }
+
 }
 
 

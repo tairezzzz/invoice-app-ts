@@ -27,6 +27,7 @@ export const getInvoicesRequestFail: Epic = transferActionEpicFactory(
 );
 
 
+
 export const deleteInvoiceRequest: Epic = (action$) =>
   action$.pipe(
     ofType(ActionTypes.DELETE_INVOICE),
@@ -47,7 +48,6 @@ export const deleteInvoiceRequestFail: Epic = transferActionEpicFactory(
   Actions.deleteInvoiceFailed,
 );
 
-
 export const continueOnDeleteInvoiceSuccess: Epic = (action$) =>
   action$.pipe(
     ofType(ActionTypes.DELETE_INVOICE_SUCCEEDED),
@@ -59,6 +59,29 @@ export const continueOnDeleteInvoiceSuccess: Epic = (action$) =>
   );
 
 
+
+export const postInvoiceRequest: Epic = (action$) =>
+  action$.pipe(
+    ofType(ActionTypes.POST_INVOICE),
+    map(
+      (action) => {
+        return InvoicesRequestActions.postInvoice.action(action.payload, action.payload.items);
+      },
+    ),
+  );
+
+export const postInvoiceRequestSuccess: Epic = transferActionEpicFactory(
+  InvoicesRequestsActionTypes.postInvoiceActionTypes.ACTION_SUCCEEDED,
+  Actions.postInvoiceSucceeded,
+);
+
+export const postInvoiceRequestFail: Epic = transferActionEpicFactory(
+  InvoicesRequestsActionTypes.postInvoiceActionTypes.ACTION_FAILED,
+  Actions.postInvoiceFailed,
+);
+
+
+
 export const epics = [
   getInvoicesRequest,
   getInvoicesRequestSuccess,
@@ -68,4 +91,8 @@ export const epics = [
   deleteInvoiceRequestSuccess,
   deleteInvoiceRequestFail,
   continueOnDeleteInvoiceSuccess,
+
+  postInvoiceRequest,
+  postInvoiceRequestSuccess,
+  postInvoiceRequestFail,
 ];
