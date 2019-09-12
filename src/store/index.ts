@@ -13,6 +13,10 @@ import { ActionTypeUnion as ProductsActionTypeUnion } from './products/actions';
 import { epics as productsEpics } from './products/epics';
 import { reducer as productsReducer } from './products/reducer';
 
+import { ActionTypeUnion as InvoicesActionTypeUnion } from './invoices/actions';
+import { epics as invoicesEpics } from './invoices/epics';
+import { reducer as invoicesReducer } from './invoices/reducer';
+
 import {
   ActionTypeUnion as CustomersRequestActionTypeUnion,
   epics as customersRequestEpics,
@@ -25,6 +29,11 @@ import {
   reducer as productsRequestReducer,
 } from './products-requests';
 
+import {
+  ActionTypeUnion as InvoicesRequestActionTypeUnion,
+  epics as invoicesRequestEpics,
+  reducer as invoicesRequestReducer,
+} from './invoices-requests';
 
 
 export const rootReducer = combineReducers({
@@ -32,6 +41,8 @@ export const rootReducer = combineReducers({
   customersRequest: customersRequestReducer,
   products: productsReducer,
   productsRequest: productsRequestReducer,
+  invoices: invoicesReducer,
+  invoicesRequests: invoicesRequestReducer,
 });
 
 export type RootState = StateType<typeof rootReducer>;
@@ -41,6 +52,8 @@ export type RootActions = ActionType<
   | CustomersRequestActionTypeUnion
   | ProductsActionTypeUnion
   | ProductsRequestActionTypeUnion
+  | InvoicesActionTypeUnion
+  | InvoicesRequestActionTypeUnion
   >;
 
 const rootEpic = combineEpics(
@@ -48,6 +61,8 @@ const rootEpic = combineEpics(
   ...customersRequestEpics,
   ...productsEpics,
   ...productsRequestEpics,
+  ...invoicesEpics,
+  ...invoicesRequestEpics,
 );
 
 const epicMiddleware = createEpicMiddleware();
