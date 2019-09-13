@@ -7,6 +7,8 @@ const initialState: State = {
   entities: {},
   ids: [],
   currentInvoiceId: null,
+  items: {},
+  itemsIds: [],
 };
 
 export function reducer(state = initialState, action: ActionTypeUnion): State {
@@ -39,6 +41,23 @@ export function reducer(state = initialState, action: ActionTypeUnion): State {
       return {
         ...state,
         entities: newEntities,
+      };
+    }
+
+    case ActionTypes.GET_INVOICE_ITEMS_SUCCEEDED: {
+      const invoiceItems = action.payload;
+
+      const previousEntities = action.type === ActionTypes.GET_INVOICE_ITEMS_SUCCEEDED ? {} : state.items;
+      const previousIds = action.type === ActionTypes.GET_INVOICE_ITEMS_SUCCEEDED ? [] : state.itemsIds;
+
+      const [items, newIds] = createEntities(invoiceItems, previousEntities);
+
+      const itemsIds = [...previousIds, ...newIds];
+
+      return {
+        ...state,
+        items,
+        itemsIds,
       };
     }
 

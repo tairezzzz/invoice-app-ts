@@ -131,7 +131,7 @@ export const getInvoiceRequest: Epic = (action$) =>
   action$.pipe(
     ofType(ActionTypes.GET_INVOICE),
     map((action) => {
-      return InvoicesRequestActions.getInvoice.action(action.id)},
+      return InvoicesRequestActions.getInvoice.action(action.payload)},
     ),
   );
 
@@ -145,6 +145,24 @@ export const getInvoiceRequestFail: Epic = transferActionEpicFactory(
   Actions.getInvoiceFailed,
 );
 
+
+export const getInvoiceItemsRequest: Epic = (action$) =>
+  action$.pipe(
+    ofType(ActionTypes.GET_INVOICE_ITEMS),
+    map((action) => {
+      return InvoicesRequestActions.getInvoiceItems.action(action.payload)},
+    ),
+  );
+
+export const getInvoiceItemsRequestSuccess: Epic = transferActionEpicFactory(
+  InvoicesRequestsActionTypes.getInvoiceItemsActionTypes.ACTION_SUCCEEDED,
+  Actions.getInvoiceItemsSucceeded,
+);
+
+export const getInvoiceItemsRequestFail: Epic = transferActionEpicFactory(
+  InvoicesRequestsActionTypes.getInvoiceItemsActionTypes.ACTION_FAILED,
+  Actions.getInvoiceItemsFailed,
+);
 
 
 export const epics = [
@@ -169,4 +187,8 @@ export const epics = [
   getInvoiceRequest,
   getInvoiceRequestSuccess,
   getInvoiceRequestFail,
+
+  getInvoiceItemsRequest,
+  getInvoiceItemsRequestSuccess,
+  getInvoiceItemsRequestFail,
 ];

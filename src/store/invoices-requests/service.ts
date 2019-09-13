@@ -1,7 +1,7 @@
 import { ajax } from 'rxjs/observable/dom/ajax';
-import {Invoice, InvoiceItem} from '../../shared/interfaces/invoice';
-import {Observable, of} from 'rxjs';
-import {map, switchMap} from 'rxjs/operators';
+import { Invoice, InvoiceItem } from '../../shared/interfaces/invoice';
+import { Observable, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 
 const url = `https://api.invoice-app.2muchcoffee.com/api/invoices`;
@@ -43,6 +43,11 @@ class InvoicesRequestsService {
   getInvoice(id: string) {
     return ajax
       .getJSON(`${url}/${id}`)
+  }
+
+  getInvoiceItems(id: string) {
+    return ajax
+      .getJSON(`${url}/${id}/items`)
   }
 
 }
