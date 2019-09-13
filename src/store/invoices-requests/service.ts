@@ -59,6 +59,16 @@ class InvoicesRequestsService {
       )
   }
 
+  updateInvoiceItems(payload: any) {
+    console.log(payload);
+    return ajax
+      .put(
+        `${url}/${payload.invoice_id}/items/${payload._id}`,
+        JSON.stringify(payload),
+        {'Content-Type': 'application/json'}
+      )
+  }
+
 }
 
 

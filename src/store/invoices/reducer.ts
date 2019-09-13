@@ -1,7 +1,8 @@
-import { createEntities } from '../utils/entities';
+import {createEntities} from '../utils/entities';
 
-import { ActionTypes, ActionTypeUnion } from './actions';
-import { State } from './state';
+import {ActionTypes, ActionTypeUnion} from './actions';
+import {State} from './state';
+
 
 const initialState: State = {
   entities: {},
@@ -45,7 +46,8 @@ export function reducer(state = initialState, action: ActionTypeUnion): State {
       };
     }
 
-    case ActionTypes.GET_INVOICE_ITEMS_SUCCEEDED: {
+    case ActionTypes.GET_INVOICE_ITEMS_SUCCEEDED:
+    case ActionTypes.UPDATE_INVOICE_ITEMS_SUCCEEDED: {
       const invoiceItems = action.payload;
 
       const previousEntities = action.type === ActionTypes.GET_INVOICE_ITEMS_SUCCEEDED ? {} : state.items;

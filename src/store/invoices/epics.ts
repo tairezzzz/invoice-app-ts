@@ -5,6 +5,7 @@ import { from } from 'rxjs';
 import { Actions as InvoicesRequestActions, ActionTypes as InvoicesRequestsActionTypes } from '../invoices-requests';
 import { transferActionEpicFactory } from '../utils/transfer-action';
 import { Actions, ActionTypes } from './actions';
+import {InvoiceItem} from '../../shared/interfaces/invoice';
 
 
 
@@ -186,6 +187,41 @@ export const updateInvoiceRequestFail: Epic = transferActionEpicFactory(
   Actions.updateInvoiceFailed,
 );
 
+
+export const updateInvoiceItemsRequest: Epic = (action$) =>
+  action$.pipe(
+    ofType(ActionTypes.UPDATE_INVOICE_SUCCEEDED),
+    mergeMap(
+      (action) => {
+
+        const { payload, meta } = action.payload;
+
+        const invoice_id = payload.response && payload.response._id;
+        const items = meta;
+
+        const itemsForUpdate = items.filter((item: InvoiceItem )=> item._id)
+
+        return from(itemsForUpdate)
+          .pipe(
+            map(  item => {
+              return InvoicesRequestActions.updateInvoiceItems.action({...item, invoice_id})
+            })
+          );
+      }
+    )
+  );
+
+export const updateInvoiceItemsRequestSuccess: Epic = transferActionEpicFactory(
+  InvoicesRequestsActionTypes.updateInvoiceItemsActionTypes.ACTION_SUCCEEDED,
+  Actions.updateInvoiceItemsSucceeded,
+);
+
+export const updateInvoiceItemsRequestFail: Epic = transferActionEpicFactory(
+  InvoicesRequestsActionTypes.updateInvoiceItemsActionTypes.ACTION_FAILED,
+  Actions.updateInvoiceItemsFailed,
+);
+
+
 export const epics = [
   getInvoicesRequest,
   getInvoicesRequestSuccess,
@@ -216,4 +252,8 @@ export const epics = [
   updateInvoiceRequest,
   updateInvoiceRequestSuccess,
   updateInvoiceRequestFail,
+
+  updateInvoiceItemsRequest,
+  updateInvoiceItemsRequestSuccess,
+  updateInvoiceItemsRequestFail,
 ];
