@@ -6,8 +6,9 @@ import { Observable } from 'rxjs';
 import { asyncActionHandlerFactory } from '../../utils/async-action-helper';
 
 import { requestsService } from '../service';
+import {Invoice} from '../../../shared/interfaces/invoice';
 
-const { effect, reducer, ActionTypes, Actions } = asyncActionHandlerFactory(
+const { effect, reducer, ActionTypes, Actions } = asyncActionHandlerFactory<any, Invoice[], Error>(
   'GET_INVOICES_REQUEST',
 );
 

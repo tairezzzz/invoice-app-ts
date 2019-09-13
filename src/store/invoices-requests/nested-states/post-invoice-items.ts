@@ -7,7 +7,7 @@ import { asyncActionHandlerFactory } from '../../utils/async-action-helper';
 
 import { requestsService } from '../service';
 
-const { effect, reducer, ActionTypes, Actions } = asyncActionHandlerFactory(
+const { effect, reducer, ActionTypes, Actions } = asyncActionHandlerFactory<any, any, Error>(
   'POST_INVOICE_ITEMS_REQUEST',
 );
 
