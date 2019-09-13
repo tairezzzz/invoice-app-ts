@@ -16,6 +16,16 @@ export const getIsInvoicesLoading = createSelector(
   (state) => state.loading,
 );
 
+export const getPostInvoiceRequestState = createSelector(
+  getState,
+  (state: State) => state.postInvoice,
+);
+
+export const getIsPostInvoiceLoading = createSelector(
+  getPostInvoiceRequestState,
+  (state) => state.loading,
+);
+
 
 export const getGetInvoiceRequestState = createSelector(
   getState,
@@ -35,5 +45,15 @@ export const getGetInvoiceItemsRequestState = createSelector(
 
 export const getIsGetInvoiceItemsLoading = createSelector(
   getGetInvoiceItemsRequestState,
+  (state) => state.loading,
+);
+
+export const getUpdateInvoiceRequestState = createSelector(
+  getState,
+  (state: State) => state.updateInvoice,
+);
+
+export const getIsUpdateInvoiceLoading = createSelector(
+  getUpdateInvoiceRequestState,
   (state) => state.loading,
 );
