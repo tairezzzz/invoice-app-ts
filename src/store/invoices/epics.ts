@@ -165,6 +165,27 @@ export const getInvoiceItemsRequestFail: Epic = transferActionEpicFactory(
 );
 
 
+export const updateInvoiceRequest: Epic = (action$) =>
+  action$.pipe(
+    ofType(ActionTypes.UPDATE_INVOICE),
+    map(
+      (action) => {
+        return InvoicesRequestActions.updateInvoice.action(action.payload, action.payload.items)
+      },
+    ),
+  );
+
+export const updateInvoiceRequestSuccess: Epic = (action$) =>
+  action$.pipe(
+    ofType(InvoicesRequestsActionTypes.updateInvoiceActionTypes.ACTION_SUCCEEDED),
+    map((action) => Actions.updateInvoiceSucceeded(action))
+  );
+
+export const updateInvoiceRequestFail: Epic = transferActionEpicFactory(
+  InvoicesRequestsActionTypes.updateInvoiceActionTypes.ACTION_FAILED,
+  Actions.updateInvoiceFailed,
+);
+
 export const epics = [
   getInvoicesRequest,
   getInvoicesRequestSuccess,
@@ -191,4 +212,8 @@ export const epics = [
   getInvoiceItemsRequest,
   getInvoiceItemsRequestSuccess,
   getInvoiceItemsRequestFail,
+
+  updateInvoiceRequest,
+  updateInvoiceRequestSuccess,
+  updateInvoiceRequestFail,
 ];

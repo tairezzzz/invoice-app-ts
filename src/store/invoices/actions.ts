@@ -27,6 +27,10 @@ export enum ActionTypes {
   GET_INVOICE_ITEMS = 'GET_INVOICE_ITEMS',
   GET_INVOICE_ITEMS_SUCCEEDED = 'GET_INVOICE_ITEMS_SUCCEEDED',
   GET_INVOICE_ITEMS_FAIL = 'GET_INVOICE_ITEMS_FAIL',
+
+  UPDATE_INVOICE = 'UPDATE_INVOICE',
+  UPDATE_INVOICE_SUCCEEDED = 'UPDATE_INVOICE_SUCCEEDED',
+  UPDATE_INVOICE_FAIL = 'UPDATE_INVOICE_FAIL',
 }
 
 export const Actions = {
@@ -53,6 +57,10 @@ export const Actions = {
   getInvoiceItems: (id: string) => action(ActionTypes.GET_INVOICE_ITEMS, id),
   getInvoiceItemsSucceeded: (payload: InvoiceItem[]) => action(ActionTypes.GET_INVOICE_ITEMS_SUCCEEDED, payload),
   getInvoiceItemsFailed: (payload?: any) => action(ActionTypes.GET_INVOICE_ITEMS_FAIL, payload),
+
+  updateInvoice: (payload: object) => action(ActionTypes.UPDATE_INVOICE, payload),
+  updateInvoiceSucceeded: (payload: any) => action(ActionTypes.UPDATE_INVOICE_SUCCEEDED, payload),
+  updateInvoiceFailed: (payload?: any) => action(ActionTypes.UPDATE_INVOICE_FAIL, payload),
 };
 
 export type ActionTypeUnion = ActionType<typeof Actions>;

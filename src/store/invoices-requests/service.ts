@@ -50,6 +50,15 @@ class InvoicesRequestsService {
       .getJSON(`${url}/${id}/items`)
   }
 
+  updateInvoice({items, ...invoice}: any) {
+    return ajax
+      .put(
+        `${url}/${invoice.id}`,
+        JSON.stringify(invoice),
+        {'Content-Type': 'application/json'}
+      )
+  }
+
 }
 
 

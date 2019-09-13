@@ -30,7 +30,8 @@ export function reducer(state = initialState, action: ActionTypeUnion): State {
       };
     }
 
-    case ActionTypes.GET_INVOICE_SUCCEEDED: {
+    case ActionTypes.GET_INVOICE_SUCCEEDED:
+    case ActionTypes.UPDATE_INVOICE_SUCCEEDED: {
       const invoice = action.payload
 
       const newEntities = {
