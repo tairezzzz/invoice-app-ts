@@ -19,6 +19,10 @@ export enum ActionTypes {
   POST_INVOICE_ITEMS = 'POST_INVOICE_ITEMS',
   POST_INVOICE_ITEMS_SUCCEEDED = 'POST_INVOICE_ITEMS_SUCCEEDED',
   POST_INVOICE_ITEMS_FAIL = 'POST_INVOICE_ITEMS_FAIL',
+
+  GET_INVOICE = 'GET_INVOICE',
+  GET_INVOICE_SUCCEEDED = 'GET_INVOICE_SUCCEEDED',
+  GET_INVOICE_FAIL = 'GET_INVOICE_FAIL',
 }
 
 export const Actions = {
@@ -31,12 +35,16 @@ export const Actions = {
   deleteInvoiceFailed: (payload?: any) => action(ActionTypes.DELETE_INVOICE_FAIL, payload),
 
   postInvoice: (payload: object) => action(ActionTypes.POST_INVOICE, payload),
-  postInvoiceSucceeded: (payload: Invoice[]) => action(ActionTypes.POST_INVOICE_SUCCEEDED, payload),
+  postInvoiceSucceeded: (payload: any) => action(ActionTypes.POST_INVOICE_SUCCEEDED, payload),
   postInvoiceFailed: (payload?: any) => action(ActionTypes.POST_INVOICE_FAIL, payload),
 
-  postInvoiceItems: (payload: object) => action(ActionTypes.POST_INVOICE_ITEMS, payload),
+  postInvoiceItems: (payload: InvoiceItem) => action(ActionTypes.POST_INVOICE_ITEMS, payload),
   postInvoiceItemsSucceeded: (payload: InvoiceItem[]) => action(ActionTypes.POST_INVOICE_ITEMS_SUCCEEDED, payload),
   postInvoiceItemsFailed: (payload?: any) => action(ActionTypes.POST_INVOICE_ITEMS_FAIL, payload),
+
+  getInvoice: (id: string) => action(ActionTypes.GET_INVOICE, id),
+  getInvoiceSucceeded: (payload: Invoice) => action(ActionTypes.GET_INVOICE_SUCCEEDED, payload),
+  getInvoiceFailed: (payload?: any) => action(ActionTypes.GET_INVOICE_FAIL, payload),
 };
 
 export type ActionTypeUnion = ActionType<typeof Actions>;

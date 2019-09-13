@@ -28,6 +28,20 @@ export function reducer(state = initialState, action: ActionTypeUnion): State {
       };
     }
 
+    case ActionTypes.GET_INVOICE_SUCCEEDED: {
+      const invoice = action.payload
+
+      const newEntities = {
+        ...state.entities,
+        [invoice._id]: invoice,
+      };
+
+      return {
+        ...state,
+        entities: newEntities,
+      };
+    }
+
     default:
       return state;
   }

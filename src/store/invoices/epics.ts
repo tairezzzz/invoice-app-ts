@@ -71,10 +71,11 @@ export const postInvoiceRequest: Epic = (action$) =>
     ),
   );
 
-export const postInvoiceRequestSuccess: Epic = transferActionEpicFactory(
-  InvoicesRequestsActionTypes.postInvoiceActionTypes.ACTION_SUCCEEDED,
-  Actions.postInvoiceSucceeded,
-);
+export const postInvoiceRequestSuccess: Epic = (action$) =>
+  action$.pipe(
+    ofType(InvoicesRequestsActionTypes.postInvoiceActionTypes.ACTION_SUCCEEDED),
+    map((action) => Actions.postInvoiceSucceeded(action))
+  );
 
 export const postInvoiceRequestFail: Epic = transferActionEpicFactory(
   InvoicesRequestsActionTypes.postInvoiceActionTypes.ACTION_FAILED,
@@ -87,14 +88,16 @@ export const postInvoiceItemsRequest: Epic = (action$) =>
     ofType(ActionTypes.POST_INVOICE_SUCCEEDED),
     mergeMap(
       (action) => {
-        const { payload, meta } = action.payload;
+        console.log(action);
+        const { payload } = action;
 
-        const invoice_id = payload.response._id;
-        const items = meta;
+        const invoice_id = payload.payload._id;
+        const items = payload.meta;
 
         return from(items)
           .pipe(
             map(  item => {
+              console.log(item);
               return InvoicesRequestActions.postInvoiceItems.action({...item, invoice_id})
             })
           );
@@ -104,7 +107,7 @@ export const postInvoiceItemsRequest: Epic = (action$) =>
 
 export const postInvoiceItemsRequestSuccess: Epic = transferActionEpicFactory(
   InvoicesRequestsActionTypes.postInvoiceItemsActionTypes.ACTION_SUCCEEDED,
-  Actions.postInvoiceItemsFailed,
+  Actions.postInvoiceItemsSucceeded,
 );
 
 export const postInvoiceItemsRequestFail: Epic = transferActionEpicFactory(
@@ -122,6 +125,25 @@ export const continueOnPostInvoiceItemsSuccess: Epic  = (action$) =>
       }
     )
   );
+
+
+export const getInvoiceRequest: Epic = (action$) =>
+  action$.pipe(
+    ofType(ActionTypes.GET_INVOICE),
+    map((action) => {
+      return InvoicesRequestActions.getInvoice.action(action.id)},
+    ),
+  );
+
+export const getInvoiceRequestSuccess: Epic = transferActionEpicFactory(
+  InvoicesRequestsActionTypes.getInvoiceActionTypes.ACTION_SUCCEEDED,
+  Actions.getInvoiceSucceeded,
+);
+
+export const getInvoiceRequestFail: Epic = transferActionEpicFactory(
+  InvoicesRequestsActionTypes.getInvoiceActionTypes.ACTION_FAILED,
+  Actions.getInvoiceFailed,
+);
 
 
 
@@ -143,4 +165,8 @@ export const epics = [
   postInvoiceItemsRequestSuccess,
   postInvoiceItemsRequestFail,
   continueOnPostInvoiceItemsSuccess,
+
+  getInvoiceRequest,
+  getInvoiceRequestSuccess,
+  getInvoiceRequestFail,
 ];
