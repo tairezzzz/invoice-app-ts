@@ -20,8 +20,8 @@ export interface InvoiceItem {
 }
 
 export interface InvoiceItemInput {
-  _id: string;
+  _id?: string;
   product_id: string;
   quantity: number;
-  invoice_id?: string;
+  invoice_id: string;
 }
