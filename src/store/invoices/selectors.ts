@@ -11,19 +11,21 @@ export const getEntities = createSelector(
   (state: State) => state.entities,
 );
 
-
 export const getInvoicesArray = createSelector(
   getInvoicesState,
   getEntities,
   (state: State, entities) => state.ids.map((id) => entities[id]),
 );
 
-
 export const getItemsEntities = createSelector(
   getInvoicesState,
   (state: State) => state.items,
 );
 
+export const getItemsIdsArray = createSelector(
+  getInvoicesState,
+  (state: State) => state.itemsIds
+);
 
 export const getInvoiceItemsArray = createSelector(
   getInvoicesState,
