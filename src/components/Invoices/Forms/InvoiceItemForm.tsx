@@ -14,9 +14,11 @@ import {RootState} from '../../../store/index';
 
 
 
+interface InvoiceItemFormProps {
+  isView?: boolean;
+}
 
-
-type Props = FormikValues;
+type Props = FormikValues & InvoiceItemFormProps;
 
 
 const InvoiceItemForm: React.FC<Props> = ({
@@ -24,6 +26,7 @@ const InvoiceItemForm: React.FC<Props> = ({
                                                            handleChange,
                                                            onRemovingInvoiceItem,
                                                            onProductChange,
+                                                            isView,
                                                            ...props}) => {
   const styles = useStyles();
 
@@ -48,6 +51,7 @@ const InvoiceItemForm: React.FC<Props> = ({
               <Field
                 name={`items.${index}.product_id`}
                 component={ProductSelector}
+                disabled={isView}
                 validate={items.length === 1 ? required : null}
                 onChange={(e: React.SyntheticEvent) => handleProductChange(e, index)}
               />
@@ -60,6 +64,7 @@ const InvoiceItemForm: React.FC<Props> = ({
                 label="q-ty"
                 component={TextField}
                 validate={isQuantity}
+                disabled={isView}
                 className={styles.numberFormControl}
                 inputProps={{
                   min: 1,
@@ -82,7 +87,7 @@ const InvoiceItemForm: React.FC<Props> = ({
                   ?
                   <button
                     type="button"
-                    className={styles.buttonRemove}
+                    className={isView ? styles.view : styles.buttonRemove}
                     onClick={() => handleRemovingInvoiceItem(index)}
                   >
                     x

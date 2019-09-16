@@ -18,9 +18,7 @@ import { isDiscount, required } from '../../../shared/validators/validators';
 import { RootState } from '../../../store/index';
 import { calculateInvoiceItemsTotal, makeItemsQuantityNumber } from './utility/utils'
 import { Actions as ProductsActions } from '../../../store/products/actions';
-import { Actions as InvoicesActions } from '../../../store/invoices/actions';
-import { InvoiceInput, InvoiceItem } from '../../../shared/interfaces/invoice';
-
+import { InvoiceItem } from '../../../shared/interfaces/invoice';
 
 
 interface FormProps {
@@ -31,25 +29,25 @@ interface FormProps {
   }
   _id?: string;
   buttonText?: string;
-  onSubmit: (data: any) => void;
+  onSubmit?: (data: any) => void;
+  isEdit?: boolean;
+  isView?: boolean;
 }
 
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   getProducts: () => dispatch(ProductsActions.getProducts()),
-  postInvoice: (payload: InvoiceInput) => dispatch(InvoicesActions.postInvoice(payload)),
-  updateInvoice: (payload: InvoiceInput) => dispatch(InvoicesActions.updateInvoice(payload)),
 });
 
 type Props = ReturnType<typeof mapDispatchToProps> & FormProps;
 
 const InvoiceForm: React.FC<Props> = ({
                                         getProducts,
-                                        postInvoice,
-                                        updateInvoice,
                                         onSubmit,
                                         initialValues = {customer_id: '', discount: 0, items: [{product_id: '', quantity: 1}]},
                                         _id,
+                                        isEdit,
+                                        isView,
                                         buttonText = 'Save',
                                         ...props}) => {
   const styles = useStyles();
@@ -91,12 +89,9 @@ const InvoiceForm: React.FC<Props> = ({
               total,
             }
 
-            onSubmit(payload)
-            // location.pathname === `/invoice/${_id}/edit`
-            //   ? updateInvoice(payload)
-            //   : postInvoice(payload)
-
-            // props.history.push("/invoices")
+            if(onSubmit) {
+              onSubmit(payload)
+            }
 
             setSubmitting(false);
           }}
@@ -109,6 +104,7 @@ const InvoiceForm: React.FC<Props> = ({
                 name="customer_id"
                 validate={required}
                 component={CustomerSelector}
+                disabled={isView}
               />
 
               <div className={styles.main}>
@@ -127,12 +123,12 @@ const InvoiceForm: React.FC<Props> = ({
                                   <InvoiceItemForm
                                     name={'items'}
                                     values={values}
-                                    // onProductChange={handleProductChange.bind(this, arrayHelpers)}
                                     onProductChange={(index: number) => handleProductChange(arrayHelpers, index)}
-                                    // onRemovingInvoiceItem={handleRemovingInvoiceItem.bind(this, arrayHelpers)}
                                     onRemovingInvoiceItem={(index: number) => handleRemovingInvoiceItem(arrayHelpers, index)}
                                     handleChange={handleChange}
-                                    {...props}/>
+                                    isView={isView}
+                                    {...props}
+                                  />
                                 )}
                     />
                     <Divider />
@@ -148,10 +144,11 @@ const InvoiceForm: React.FC<Props> = ({
                     </ListItem>
                   </List>
 
-                  <div className={styles.buttonWrapper}>
+                  <div className={isView ? styles.view : styles.buttonWrapper}>
                     <ColorButtonGreen
                       type="submit"
                       disabled={isPostInvoiceLoading || isUpdateInvoiceLoading}
+                      // style={styles}
                     >
                       {buttonText}
                     </ColorButtonGreen>
@@ -165,6 +162,7 @@ const InvoiceForm: React.FC<Props> = ({
                     name="discount"
                     label="discount"
                     validate={isDiscount}
+                    disabled={isEdit || isView}
                     component={TextField}
                     className={styles.numberFormControl}
                     inputProps={{

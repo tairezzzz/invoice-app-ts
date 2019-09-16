@@ -71,6 +71,9 @@ export const useStyles = makeStyles({
   errorMessage: {
     color: '#f44336',
     fontSize: '0.75rem'
+  },
+  view: {
+    display: 'none'
   }
 
 });
