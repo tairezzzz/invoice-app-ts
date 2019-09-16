@@ -5,7 +5,7 @@ import { from } from 'rxjs';
 import { Actions as InvoicesRequestActions, ActionTypes as InvoicesRequestsActionTypes } from '../invoices-requests';
 import { transferActionEpicFactory } from '../utils/transfer-action';
 import { Actions, ActionTypes } from './actions';
-import {InvoiceItem} from '../../shared/interfaces/invoice';
+import { InvoiceItemInput} from '../../shared/interfaces/invoice';
 
 
 
@@ -89,7 +89,6 @@ export const postInvoiceItemsRequest: Epic = (action$) =>
     ofType(ActionTypes.POST_INVOICE_SUCCEEDED),
     mergeMap(
       (action) => {
-        console.log(action);
         const { payload } = action;
 
         const invoice_id = payload.payload._id;
@@ -98,7 +97,6 @@ export const postInvoiceItemsRequest: Epic = (action$) =>
         return from(items)
           .pipe(
             map(  item => {
-              console.log(item);
               return InvoicesRequestActions.postInvoiceItems.action({...item, invoice_id})
             })
           );
@@ -193,32 +191,55 @@ export const updateInvoiceItemsRequest: Epic = (action$) =>
     ofType(ActionTypes.UPDATE_INVOICE_SUCCEEDED),
     mergeMap(
       (action) => {
-
         const { payload, meta } = action.payload;
 
         const invoice_id = payload.response && payload.response._id;
-        const items = meta;
+        const items: InvoiceItemInput[] = meta;
 
-        const itemsForUpdate = items.filter((item: InvoiceItem )=> item._id)
-
-        return from(itemsForUpdate)
+        return from(items)
           .pipe(
             map(  item => {
-              return InvoicesRequestActions.updateInvoiceItems.action({...item, invoice_id})
+              if (item._id) {
+                return InvoicesRequestActions.updateInvoiceItems.action({...item, invoice_id})
+              }
+              return InvoicesRequestActions.postInvoiceItems.action({...item, invoice_id})
             })
           );
       }
     )
   );
 
-export const updateInvoiceItemsRequestSuccess: Epic = transferActionEpicFactory(
-  InvoicesRequestsActionTypes.updateInvoiceItemsActionTypes.ACTION_SUCCEEDED,
-  Actions.updateInvoiceItemsSucceeded,
-);
+export const updateInvoiceItemsRequestSuccess: Epic = (action$) =>
+  action$.pipe(
+    ofType(InvoicesRequestsActionTypes.updateInvoiceItemsActionTypes.ACTION_SUCCEEDED),
+    map((action) => {
+      return Actions.updateInvoiceItemsSucceeded(action.payload.response)})
+  );
 
 export const updateInvoiceItemsRequestFail: Epic = transferActionEpicFactory(
   InvoicesRequestsActionTypes.updateInvoiceItemsActionTypes.ACTION_FAILED,
   Actions.updateInvoiceItemsFailed,
+);
+
+
+export const deleteInvoiceItemRequest: Epic = (action$) =>
+  action$.pipe(
+    ofType(ActionTypes.DELETE_INVOICE_ITEM),
+    map(
+      (action) => {
+        return InvoicesRequestActions.deleteInvoiceItem.action(action.payload);
+      },
+    ),
+  );
+
+export const deleteInvoiceItemRequestSuccess: Epic = transferActionEpicFactory(
+  InvoicesRequestsActionTypes.deleteInvoiceItemActionTypes.ACTION_SUCCEEDED,
+  Actions.deleteInvoiceItemSucceeded,
+);
+
+export const deleteInvoiceItemRequestFail: Epic = transferActionEpicFactory(
+  InvoicesRequestsActionTypes.deleteInvoiceItemActionTypes.ACTION_FAILED,
+  Actions.deleteInvoiceItemFailed,
 );
 
 
@@ -256,4 +277,8 @@ export const epics = [
   updateInvoiceItemsRequest,
   updateInvoiceItemsRequestSuccess,
   updateInvoiceItemsRequestFail,
+
+  deleteInvoiceItemRequest,
+  deleteInvoiceItemRequestSuccess,
+  deleteInvoiceItemRequestFail,
 ];

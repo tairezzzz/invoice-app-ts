@@ -46,8 +46,7 @@ export function reducer(state = initialState, action: ActionTypeUnion): State {
       };
     }
 
-    case ActionTypes.GET_INVOICE_ITEMS_SUCCEEDED:
-    case ActionTypes.UPDATE_INVOICE_ITEMS_SUCCEEDED: {
+    case ActionTypes.GET_INVOICE_ITEMS_SUCCEEDED: {
       const invoiceItems = action.payload;
 
       const previousEntities = action.type === ActionTypes.GET_INVOICE_ITEMS_SUCCEEDED ? {} : state.items;
@@ -61,6 +60,20 @@ export function reducer(state = initialState, action: ActionTypeUnion): State {
         ...state,
         items,
         itemsIds,
+      };
+    }
+
+    case ActionTypes.UPDATE_INVOICE_ITEMS_SUCCEEDED: {
+      const invoiceItem = action.payload
+
+      const newEntities = {
+        ...state.items,
+        [invoiceItem._id]: invoiceItem,
+      };
+
+      return {
+        ...state,
+        items: newEntities,
       };
     }
 

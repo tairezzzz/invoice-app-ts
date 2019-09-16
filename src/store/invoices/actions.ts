@@ -35,6 +35,10 @@ export enum ActionTypes {
   UPDATE_INVOICE_ITEMS = 'UPDATE_INVOICE_ITEMS',
   UPDATE_INVOICE_ITEMS_SUCCEEDED = 'UPDATE_INVOICE_ITEMS_SUCCEEDED',
   UPDATE_INVOICE_ITEMS_FAIL = 'UPDATE_INVOICE_ITEMS_FAIL',
+
+  DELETE_INVOICE_ITEM = 'DELETE_INVOICE_ITEM',
+  DELETE_INVOICE_ITEM_SUCCEEDED = 'DELETE_INVOICE_ITEM_SUCCEEDED',
+  DELETE_INVOICE_ITEM_FAIL = 'DELETE_INVOICE_ITEM_FAIL',
 }
 
 export const Actions = {
@@ -67,8 +71,12 @@ export const Actions = {
   updateInvoiceFailed: (payload?: any) => action(ActionTypes.UPDATE_INVOICE_FAIL, payload),
 
   updateInvoiceItems: (payload: InvoiceItem) => action(ActionTypes.UPDATE_INVOICE_ITEMS, payload),
-  updateInvoiceItemsSucceeded: (payload: InvoiceItem[]) => action(ActionTypes.UPDATE_INVOICE_ITEMS_SUCCEEDED, payload),
+  updateInvoiceItemsSucceeded: (payload: InvoiceItem) => action(ActionTypes.UPDATE_INVOICE_ITEMS_SUCCEEDED, payload),
   updateInvoiceItemsFailed: (payload?: any) => action(ActionTypes.UPDATE_INVOICE_ITEMS_FAIL, payload),
+
+  deleteInvoiceItem: (id: string) => action(ActionTypes.DELETE_INVOICE_ITEM, id),
+  deleteInvoiceItemSucceeded: (payload: InvoiceItem[]) => action(ActionTypes.DELETE_INVOICE_ITEM_SUCCEEDED, payload),
+  deleteInvoiceItemFailed: (payload?: any) => action(ActionTypes.DELETE_INVOICE_ITEM_FAIL, payload),
 };
 
 export type ActionTypeUnion = ActionType<typeof Actions>;
