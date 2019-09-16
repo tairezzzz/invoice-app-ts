@@ -7,7 +7,7 @@ import { Actions as InvoicesActions } from '../../store/invoices/actions';
 import { RootState } from '../../store/index';
 
 import { AppBar, Toolbar, Typography, Container } from '@material-ui/core';
-import { styles } from './styles'
+import { useStyles } from './styles';
 
 
 
@@ -23,6 +23,8 @@ type Props = ReturnType<typeof mapDispatchToProps> & RouteComponentProps;
 
 const Component: React.FC<Props> = ({getInvoices, location}) => {
 
+    const styles = useStyles();
+
     useEffect(() => {
         getInvoices();
     }, [getInvoices]);
@@ -36,7 +38,7 @@ const Component: React.FC<Props> = ({getInvoices, location}) => {
         <div>
             <AppBar position="static" >
                 <Container>
-                    <Toolbar variant="dense" style={styles.toolbar}>
+                    <Toolbar variant="dense" className={styles.toolbar}>
                         <Link to="/">
                             <Typography variant="h6" color="textPrimary">Logo</Typography>
                         </Link>
@@ -55,7 +57,12 @@ const Component: React.FC<Props> = ({getInvoices, location}) => {
                               <Link to="/invoice/new">
                                   <Typography variant="h6" color="textPrimary"> + New Invoice</Typography>
                               </Link>
-                              : null
+                              :
+                              <div className={styles.hidden}>
+                                  <Link to="/invoice/new">
+                                      <Typography variant="h6" color="textPrimary"> + New Invoice</Typography>
+                                  </Link>
+                              </div>
                         }
                     </Toolbar>
                 </Container>
