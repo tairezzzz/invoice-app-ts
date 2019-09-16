@@ -53,20 +53,25 @@ class InvoicesRequestsService {
   updateInvoice({items, ...invoice}: any) {
     return ajax
       .put(
-        `${url}/${invoice.id}`,
+        `${url}/${invoice._id}`,
         JSON.stringify(invoice),
         {'Content-Type': 'application/json'}
       )
   }
 
-  updateInvoiceItems(payload: any) {
-    console.log(payload);
+  updateInvoiceItems(payload: InvoiceItem) {
     return ajax
       .put(
         `${url}/${payload.invoice_id}/items/${payload._id}`,
         JSON.stringify(payload),
         {'Content-Type': 'application/json'}
       )
+  }
+
+  deleteInvoiceItem(payload: any) {
+    return ajax
+      .delete(`${url}/${payload.inv_id}/items/${payload.id}`)
+
   }
 
 }

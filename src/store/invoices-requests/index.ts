@@ -59,6 +59,13 @@ import {
   reducer as updateInvoiceItemsReducer,
 } from './nested-states/update-invoice-items';
 
+import {
+  Actions as deleteInvoiceItem,
+  ActionTypes as deleteInvoiceItemActionTypes,
+  epic as deleteInvoiceItemEpic,
+  reducer as deleteInvoiceItemReducer,
+} from './nested-states/delete-invoice-item';
+
 export const Actions = {
   getInvoices,
   deleteInvoice,
@@ -68,6 +75,7 @@ export const Actions = {
   getInvoiceItems,
   updateInvoice,
   updateInvoiceItems,
+  deleteInvoiceItem,
 };
 
 export const ActionTypes = {
@@ -79,6 +87,7 @@ export const ActionTypes = {
   getInvoiceItemsActionTypes,
   updateInvoiceActionTypes,
   updateInvoiceItemsActionTypes,
+  deleteInvoiceItemActionTypes,
 };
 
 export const reducer = combineReducers({
@@ -90,6 +99,7 @@ export const reducer = combineReducers({
   getInvoiceItems: getInvoiceItemsReducer,
   updateInvoice: updateInvoiceReducer,
   updateInvoiceItems: updateInvoiceItemsReducer,
+  deleteInvoiceItem: deleteInvoiceItemReducer,
 });
 
 export type ActionTypeUnion = ActionType<typeof reducer>;
@@ -103,6 +113,7 @@ export const epics = [
   getInvoiceItemsEpic,
   updateInvoiceEpic,
   updateInvoiceItemsEpic,
+  deleteInvoiceItemEpic,
 ];
 
 export type State = StateType<typeof reducer>;
