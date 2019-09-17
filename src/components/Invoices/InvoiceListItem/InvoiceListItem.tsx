@@ -18,13 +18,13 @@ interface InvoiceProps {
   discount: number;
   total: number;
   customer_id: any;
-  isInvoicesPage: boolean;
+  isEditable: boolean;
   onDeletingInvoice: any;
 }
 
 
 
-const InvoiceListItem: React.FC<InvoiceProps>  = ({customers, onDeletingInvoice,  inv_id, discount, total, customer_id, isInvoicesPage }) => {
+const InvoiceListItem: React.FC<InvoiceProps>  = ({customers, onDeletingInvoice,  inv_id, discount, total, customer_id, isEditable }) => {
 
 
   const [isOpen, setToggleOpen] = useState(false)
@@ -56,7 +56,7 @@ const InvoiceListItem: React.FC<InvoiceProps>  = ({customers, onDeletingInvoice,
         </Link>
 
         {
-          isInvoicesPage
+          isEditable
             ?
             <>
               <Link to={`/invoice/${inv_id}/edit`}>

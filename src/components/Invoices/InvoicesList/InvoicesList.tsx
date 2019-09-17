@@ -46,9 +46,7 @@ const InvoicesList: React.FC<Props> = ({getCustomers, getInvoices, deleteInvoice
     deleteInvoice(id)
   }
 
-
-  const isInvoicesPage = location.pathname === "/invoices"
-
+  const isEditable = location.pathname === "/invoices"
 
   const customers = useSelector((state: RootState) => getCustomersSelector(state))
   const invoices = useSelector((state: RootState) => getInvoicesArray(state))
@@ -67,7 +65,7 @@ const InvoicesList: React.FC<Props> = ({getCustomers, getInvoices, deleteInvoice
         customers={customers}
         {...invoice}
         onDeletingInvoice={onDeletingInvoice}
-        isInvoicesPage={isInvoicesPage}/> ))
+        isEditable={isEditable}/> ))
     : null;
 
 
