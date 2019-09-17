@@ -5,21 +5,21 @@ import { Table, TableBody, TableHead, TableRow, Paper, Container } from '@materi
 import { connect, useSelector } from 'react-redux';
 import { Dispatch } from 'redux';
 
-import { Actions as InvoicesActions } from '../../store/invoices/actions';
-import { Actions as CustomersActions } from '../../store/customers/actions';
+import { Actions as InvoicesActions } from '../../../store/invoices/actions';
+import { Actions as CustomersActions } from '../../../store/customers/actions';
 
-import { getInvoicesArray } from '../../store/invoices/selectors';
-import { getEntities as getCustomersSelector } from '../../store/customers/selectors';
-import { getIsCustomersLoading } from "../../store/customers-requests/selectors";
-import { getIsInvoicesLoading } from "../../store/invoices-requests/selectors";
+import { getInvoicesArray } from '../../../store/invoices/selectors';
+import { getEntities as getCustomersSelector } from '../../../store/customers/selectors';
+import { getIsCustomersLoading } from "../../../store/customers-requests/selectors";
+import { getIsInvoicesLoading } from "../../../store/invoices-requests/selectors";
 
-import { RootState } from '../../store';
+import { RootState } from '../../../store/index';
 import { RouteComponentProps } from 'react-router-dom';
 
-import InvoiceListItem from './InvoiceListItem/InvoiceListItem';
-import StyledTableCell from '../../shared/components/Table/StyledTableCell';
+import InvoiceListItem from '../InvoiceListItem/InvoiceListItem';
+import StyledTableCell from '../../../shared/components/Table/StyledTableCell';
 import { styles } from './styles';
-import Spinner from "../../shared/components/Spinner/Spinner";
+import Spinner from "../../../shared/components/Spinner/Spinner";
 
 
 
@@ -33,7 +33,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
 type Props = ReturnType<typeof mapDispatchToProps> & RouteComponentProps;
 
-const Invoices: React.FC<Props> = ({getCustomers, getInvoices, deleteInvoice, location }) => {
+const InvoicesList: React.FC<Props> = ({getCustomers, getInvoices, deleteInvoice, location }) => {
   useEffect(() => {
     getInvoices();
   }, [getInvoices]);
@@ -95,4 +95,4 @@ const Invoices: React.FC<Props> = ({getCustomers, getInvoices, deleteInvoice, lo
   );
 }
 
-export default connect(null, mapDispatchToProps)(Invoices);
+export default connect(null, mapDispatchToProps)(InvoicesList);
