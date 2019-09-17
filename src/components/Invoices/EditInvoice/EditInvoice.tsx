@@ -18,6 +18,7 @@ import Spinner from '../../../shared/components/Spinner/Spinner';
 import InvoiceForm from '../Forms/InvoiceForm';
 import { RouteComponentProps } from 'react-router';
 import {Invoice, InvoiceItem} from '../../../shared/interfaces/invoice';
+import _ from 'lodash';
 
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -40,7 +41,7 @@ const EditInvoice: React.FC<Props> = ({
                                         ...props}) => {
 
 
-  const id = (params as any)['id']
+  const id = _.get(params, 'id')
 
   useEffect(() => {
     getInvoice(id);
@@ -62,7 +63,6 @@ const EditInvoice: React.FC<Props> = ({
   const onSubmit = (payload: any) => {
 
     const payloadIds = payload.items.map((it: InvoiceItem) => it._id).filter((id: string) => !!id)
-
     const deleteIds = invoiceItemsIds.filter((id: string) => {
       return !payloadIds.includes(id);
     });
@@ -75,21 +75,18 @@ const EditInvoice: React.FC<Props> = ({
       return deleteInvoiceItem(deletePayload)
     })
 
-
     updateInvoice(payload)
     history.push("/invoices")
   }
 
   const invoice = invoices[id]
 
-  const discount = (invoice && invoice.discount) || 0
-
-  const customer_id = invoice && invoice.customer_id
-
-
-  if(isInvoiceLoading || isInvoiceItemsLoading || invoiceItems.length === 0) {
+  if(isInvoiceLoading || isInvoiceItemsLoading || invoiceItems.length === 0 || !invoice) {
     return <Spinner />
   }
+
+  const discount = (invoice.discount) || 0
+  const customer_id = invoice.customer_id
 
   const items = [...invoiceItems, {product_id: '', quantity: 1}]
 
@@ -101,7 +98,7 @@ const EditInvoice: React.FC<Props> = ({
       initialValues={initialValues}
       buttonText={"Save changes"}
       _id={id}
-      isEdit
+      isEdit={true}
       onSubmit={onSubmit}
     />
   )

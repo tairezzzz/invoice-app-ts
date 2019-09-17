@@ -11,11 +11,10 @@ import {
   getIsGetInvoiceItemsLoading
 } from "../../../store/invoices-requests/selectors";
 import { RootState } from '../../../store/index';
-
 import Spinner from '../../../shared/components/Spinner/Spinner';
-
 import InvoiceForm from '../Forms/InvoiceForm';
 import { RouteComponentProps } from 'react-router';
+import _ from 'lodash';
 
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -28,7 +27,7 @@ type Props = ReturnType<typeof mapDispatchToProps> & RouteComponentProps;
 
 const ViewInvoice: React.FC<Props> = ({getInvoice, getInvoiceItems, match: {params}}) => {
 
-  const id = (params as any)['id']
+  const id = _.get(params, 'id')
 
   useEffect(() => {
     getInvoice(id);
@@ -47,12 +46,13 @@ const ViewInvoice: React.FC<Props> = ({getInvoice, getInvoiceItems, match: {para
   const invoiceItems = useSelector((state: RootState) => getInvoiceItemsArray(state))
 
   const invoice = invoices[id]
-  const discount = (invoice && invoice.discount) || 0
-  const customer_id = invoice && invoice.customer_id
 
-  if(isInvoiceLoading || isInvoiceItemsLoading || invoiceItems.length === 0) {
+  if(isInvoiceLoading || isInvoiceItemsLoading || invoiceItems.length === 0 || !invoice) {
     return <Spinner />
   }
+
+  const discount = (invoice.discount) || 0
+  const customer_id = invoice.customer_id
 
   const items = [...invoiceItems]
 
