@@ -14,7 +14,7 @@ import { RootState } from '../../../store/index';
 import Spinner from '../../../shared/components/Spinner/Spinner';
 import InvoiceForm from '../Forms/InvoiceForm';
 import { RouteComponentProps } from 'react-router';
-import _ from 'lodash';
+import get from 'lodash/get';
 
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -27,7 +27,7 @@ type Props = ReturnType<typeof mapDispatchToProps> & RouteComponentProps;
 
 const ViewInvoice: React.FC<Props> = ({getInvoice, getInvoiceItems, match: {params}}) => {
 
-  const id = _.get(params, 'id')
+  const id: string = get(params, 'id')
 
   useEffect(() => {
     getInvoice(id);

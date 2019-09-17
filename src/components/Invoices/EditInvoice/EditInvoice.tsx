@@ -17,8 +17,8 @@ import Spinner from '../../../shared/components/Spinner/Spinner';
 
 import InvoiceForm from '../Forms/InvoiceForm';
 import { RouteComponentProps } from 'react-router';
-import {Invoice, InvoiceItem} from '../../../shared/interfaces/invoice';
-import _ from 'lodash';
+import { Invoice, InvoiceItemInput } from '../../../shared/interfaces/invoice';
+import get from 'lodash/get';
 
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -41,7 +41,7 @@ const EditInvoice: React.FC<Props> = ({
                                         ...props}) => {
 
 
-  const id = _.get(params, 'id')
+  const id: string = get(params, 'id');
 
   useEffect(() => {
     getInvoice(id);
@@ -60,9 +60,9 @@ const EditInvoice: React.FC<Props> = ({
   const invoiceItems = useSelector((state: RootState) => getInvoiceItemsArray(state))
   const invoiceItemsIds = useSelector((state: RootState) => getItemsIdsArray(state))
 
-  const onSubmit = (payload: any) => {
+  const onSubmit = (payload: Invoice & {items: InvoiceItemInput[]}) => {
 
-    const payloadIds = payload.items.map((it: InvoiceItem) => it._id).filter((id: string) => !!id)
+    const payloadIds = payload.items.map((it) => it._id).filter((id) => !!id)
     const deleteIds = invoiceItemsIds.filter((id: string) => {
       return !payloadIds.includes(id);
     });
