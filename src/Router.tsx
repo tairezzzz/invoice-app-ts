@@ -2,7 +2,7 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import Customers from './components/Customers/Customers';
 import Products from './components/Products/Products';
-import Invoices from './components/Invoices/Invoices';
+import Invoices from './components/Invoices/InvoicesList/InvoicesList';
 import CreateInvoice from './components/Invoices/CreateInvoice/CreateInvoice';
 import EditInvoice from './components/Invoices/EditInvoice/EditInvoice';
 import ViewInvoice from './components/Invoices/ViewInvoice/ViewInvoice';
