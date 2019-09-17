@@ -51,19 +51,13 @@ const Component: React.FC<Props> = ({getInvoices, location}) => {
                         <Link to="/invoices">
                             <Typography variant="h6" color="textPrimary">Invoices ({invoicesAmount})</Typography>
                         </Link>
-                        {
-                            location.pathname !== "/invoice/new"
-                              ?
-                              <Link to="/invoice/new">
-                                  <Typography variant="h6" color="textPrimary"> + New Invoice</Typography>
-                              </Link>
-                              :
-                              <div className={styles.hidden}>
-                                  <Link to="/invoice/new">
-                                      <Typography variant="h6" color="textPrimary"> + New Invoice</Typography>
-                                  </Link>
-                              </div>
-                        }
+
+                        <div className={location.pathname !== "/invoice/new" ? undefined : styles.hidden}>
+                            <Link to="/invoice/new">
+                                <Typography variant="h6" color="textPrimary"> + New Invoice</Typography>
+                            </Link>
+                        </div>
+
                     </Toolbar>
                 </Container>
             </AppBar>
