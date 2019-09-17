@@ -46,14 +46,9 @@ const ViewInvoice: React.FC<Props> = ({getInvoice, getInvoiceItems, match: {para
   const invoices = useSelector((state: RootState) => getInvoicesEntities(state))
   const invoiceItems = useSelector((state: RootState) => getInvoiceItemsArray(state))
 
-
   const invoice = invoices[id]
-
   const discount = (invoice && invoice.discount) || 0
-
   const customer_id = invoice && invoice.customer_id
-
-
 
   if(isInvoiceLoading || isInvoiceItemsLoading || invoiceItems.length === 0) {
     return <Spinner />
@@ -67,7 +62,7 @@ const ViewInvoice: React.FC<Props> = ({getInvoice, getInvoiceItems, match: {para
   return (
     <InvoiceForm
       initialValues={initialValues}
-      isView
+      isView={true}
       _id={id}
     />
   )
