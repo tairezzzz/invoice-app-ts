@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { connect, useSelector } from 'react-redux';
-import { Dispatch } from 'redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Actions } from '../../store/customers/actions';
 import { RootState } from '../../store';
 import { getCustomersArray } from '../../store/customers/selectors';
@@ -15,18 +14,14 @@ import Spinner from '../../shared/components/Spinner/Spinner';
 
 
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  getCustomers: () => dispatch(Actions.getCustomers()),
-});
 
+const Customers: React.FC = ({ ...props}) => {
 
-type Props = ReturnType<typeof mapDispatchToProps>;
-
-const Customers: React.FC<Props> = ({getCustomers, ...props}) => {
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    getCustomers();
-  }, [getCustomers]);
+    dispatch(Actions.getCustomers())
+  }, [dispatch]);
 
   const customers = useSelector((state: RootState) => getCustomersArray(state))
   const isCustomersLoading = useSelector((state: RootState) => getIsCustomersLoading(state))
@@ -65,5 +60,4 @@ const Customers: React.FC<Props> = ({getCustomers, ...props}) => {
   );
 }
 
-
-export default connect(null, mapDispatchToProps)(Customers);
+export default Customers;
