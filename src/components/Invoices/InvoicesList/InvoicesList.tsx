@@ -33,7 +33,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
 type Props = ReturnType<typeof mapDispatchToProps> & RouteComponentProps;
 
-const InvoicesList: React.FC<Props> = ({getCustomers, getInvoices, deleteInvoice, location }) => {
+const InvoicesList: React.FC<Props> = ({ getCustomers, getInvoices, deleteInvoice, location }) => {
   useEffect(() => {
     getInvoices();
   }, [getInvoices]);
@@ -53,20 +53,22 @@ const InvoicesList: React.FC<Props> = ({getCustomers, getInvoices, deleteInvoice
   const isCustomersLoading = useSelector((state: RootState) => getIsCustomersLoading(state))
   const isInvoicesLoading = useSelector((state: RootState) => getIsInvoicesLoading(state))
 
-  if (isCustomersLoading || isInvoicesLoading ) {
+  if (isCustomersLoading || isInvoicesLoading) {
     return <Spinner/>
   }
 
-  const invoicesRows  =  invoices
-    ? invoices.map(invoice => (
-      <InvoiceListItem
-        key={invoice._id}
-        inv_id={invoice._id}
-        customers={customers}
-        {...invoice}
-        onDeletingInvoice={onDeletingInvoice}
-        isEditable={isEditable}/> ))
-    : null;
+  const invoicesRows = invoices.map(invoice => {
+     const customerName = customers[invoice.customer_id] && customers[invoice.customer_id].name
+     return (
+        <InvoiceListItem
+          key={invoice._id}
+          inv_id={invoice._id}
+          customerName={customerName}
+          {...invoice}
+          onDeletingInvoice={onDeletingInvoice}
+          isEditable={isEditable}/>
+     )
+  })
 
 
   return (

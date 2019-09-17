@@ -13,18 +13,19 @@ import { styles } from './styles';
 
 
 interface InvoiceProps {
-  customers: any;
   inv_id: string;
   discount: number;
   total: number;
-  customer_id: any;
   isEditable: boolean;
   onDeletingInvoice: any;
+  customerName: string;
 }
 
 
 
-const InvoiceListItem: React.FC<InvoiceProps>  = ({customers, onDeletingInvoice,  inv_id, discount, total, customer_id, isEditable }) => {
+
+const InvoiceListItem: React.FC<InvoiceProps>  = ({ customerName, onDeletingInvoice, inv_id, discount, total, isEditable }) => {
+
 
 
   const [isOpen, setToggleOpen] = useState(false)
@@ -45,7 +46,7 @@ const InvoiceListItem: React.FC<InvoiceProps>  = ({customers, onDeletingInvoice,
     <StyledTableRow>
       <StyledTableCell component="th" scope="row">{inv_id}</StyledTableCell>
       <StyledTableCell>
-        { customers[customer_id] ? customers[customer_id].name : 'name'}
+        { customerName }
       </StyledTableCell>
       <StyledTableCell>{discount ? discount : 0}</StyledTableCell>
       <StyledTableCell>{total.toFixed(2)}</StyledTableCell>
